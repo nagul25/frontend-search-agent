@@ -1,0 +1,11 @@
+.app {
+  min-height: 100vh;
+  display: block;
+  /* display: flex; */
+  /* flex-direction: column; */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app > * {
+  /* flex: 1; */
+}

@@ -1,0 +1,72 @@
+.textInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.textInput {
+  flex: 1;
+  min-height: 24px;
+  max-height: 200px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: none;
+  overflow-y: auto;
+  background: transparent;
+  color: #333333;
+}
+
+.textInput::placeholder {
+  color: #999999;
+}
+
+.textInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #667eea;
+  color: white;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: #5a6fd8;
+  transform: scale(1.05);
+}
+
+.sendButton:disabled {
+  background: #cccccc;
+  color: #999999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sendButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.characterCount {
+  font-size: 0.75rem;
+  color: #999999;
+  text-align: right;
+  padding-right: 0.5rem;
+}
