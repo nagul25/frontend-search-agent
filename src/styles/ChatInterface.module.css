@@ -34,6 +34,19 @@
   background: #f8f9fa;
 }
 
+.messagesContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 4px;
+}
+
+.messagesContainer::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
 .welcomeMessage {
   display: flex;
   flex-direction: column;
@@ -117,6 +130,30 @@
   border-radius: 18px;
   word-wrap: break-word;
   max-width: 100%;
+  max-height: 100px;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+}
+
+.messageExtras {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.messageText.expanded {
+  max-height: none;
+}
+
+.showMoreButton {
+  margin-left: auto;
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 0.675rem;
+  padding: 0;
 }
 
 .message.user .messageText {

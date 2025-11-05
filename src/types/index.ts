@@ -25,6 +25,20 @@ export interface ChatResponse {
   error?: string;
 }
 
+export type QueryRequestResponseType = {
+  message: string;
+  rag_response?: {
+    question: string;
+    answer: string;
+    metadata?: Record<string, unknown>;
+    sources?: Array<Record<string, unknown>>;
+  };
+  upload_info?: {
+    message: string;
+    uploaded_files: Array<Record<string, unknown>>;
+  };
+}
+
 export interface ApiResponse<T> {
   data: T;
   status: number;

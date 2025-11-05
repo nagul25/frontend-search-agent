@@ -12,6 +12,7 @@ const ChatInterface: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
+  const [showMoreAnswer, setShowMoreAnswer] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,11 +22,6 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const handleHealthCheck = async () => {
-    const response = await healthCheck();
-    console.log('Health Check Response:', response);
-  }
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() && uploadedFiles.length === 0) return;
@@ -49,10 +45,10 @@ const ChatInterface: React.FC = () => {
         message: inputValue,
         files: uploadedFiles.map(file => file.file),
       });
-      console.log("Chat Response: ", response);
+      console.log("Chat Response: ", response.rag_response?.answer);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response.data.message,
+        content: response.rag_response?.answer || "No response from assistant.",
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -80,12 +76,14 @@ const ChatInterface: React.FC = () => {
     setShowFileUpload(!showFileUpload);
   };
 
+  const toggleAnswerExpansion = () => {
+    setShowMoreAnswer(!showMoreAnswer);
+  }
+
   return (
     <div className={styles.chatInterface}>
       <div className={styles.chatHeader}>
         <h1 className={styles.chatTitle}>ARB Assistant</h1>
-        <p className={styles.chatSubtitle}>Ask me anything and upload files to get help</p>
-        <button onClick={handleHealthCheck}>Health check</button>
       </div>
 
       <div className={styles.messagesContainer}>
@@ -106,15 +104,26 @@ const ChatInterface: React.FC = () => {
                   {message.role === 'user' ? <User size={20} /> : <Bot size={20} />}
                 </div>
                 <div className={styles.messageContent}>
-                  <div className={styles.messageText}>
+                  <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
                     {message.content}
                   </div>
+                  <div className={styles.messageExtras}>
+                  {message.content.length > 300 && (
+                    <span
+                      className={styles.showMoreButton}
+                      onClick={toggleAnswerExpansion}
+                    >
+                      {showMoreAnswer ? 'Show Less' : 'Show More'}
+                    </span>
+                  )}
+
                   {message.files && message.files.length > 0 && (
                     <div className={styles.messageFiles}>
                       <Paperclip size={16} />
                       <span>{message.files.length} file(s) attached</span>
                     </div>
                   )}
+                  </div>
                   <div className={styles.messageTimestamp}>
                     {formatTimestamp(message.timestamp)}
                   </div>
