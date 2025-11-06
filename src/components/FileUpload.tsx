@@ -9,6 +9,7 @@ interface FileUploadProps {
   maxFiles?: number;
   maxFileSize?: number; // in MB
   acceptedTypes?: string[];
+  onToggleFileDrop?: () => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -17,6 +18,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   maxFiles = 10,
   maxFileSize = 10,
   acceptedTypes = ['image/*', 'text/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  onToggleFileDrop
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -129,6 +131,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         onDragOver={handleDrag}
         onDrop={handleDrop}
       >
+        <button className={styles.closeButton} onClick={onToggleFileDrop}>
+          <X stroke='#334155' />
+        </button>
         <input
           ref={fileInputRef}
           type="file"
@@ -176,7 +181,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
                   onClick={() => removeFile(file.id)}
                   className={styles.removeButton}
                 >
-                  <X size={16} />
+                  <X size={16} stroke='red' />
                 </button>
               </div>
             ))}

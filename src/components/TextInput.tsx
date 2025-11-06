@@ -63,12 +63,12 @@ const TextInput: React.FC<TextInputProps> = ({
           rows={1}
         />
         <button
-          onClick={handleSend}
-          disabled={!value.trim() || disabled}
-          className={styles.sendButton}
           type="button"
+          onClick={handleSend}
+          className={styles.sendButton}
+          disabled={!value.trim() || disabled}
         >
-          <Send size={20} />
+          <Send fill='white' size={28} />
         </button>
       </div>
       <div className={styles.characterCount}>

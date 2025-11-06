@@ -20,13 +20,6 @@ code {
     monospace;
 }
 
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: inherit;
-}
-
 input, textarea {
   font-family: inherit;
   border: none;

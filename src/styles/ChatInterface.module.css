@@ -2,28 +2,23 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  /* max-width: 800px; */
-  /* margin: 0 auto; */
-  background: #787575;
+  background: #0f172a;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
 }
 
 .chatHeader {
   padding: .5rem;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-  background: #ffffff;
 }
 
 .chatTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: #333333;
   margin-bottom: 0.2rem;
 }
 
 .chatSubtitle {
-  color: #666666;
   font-size: 0.875rem;
 }
 
@@ -31,7 +26,6 @@
   flex: 1;
   overflow-y: auto;
   padding: 1rem;
-  background: #f8f9fa;
 }
 
 .messagesContainer::-webkit-scrollbar {
@@ -65,12 +59,10 @@
 .welcomeMessage h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333333;
   margin-bottom: 1rem;
 }
 
 .welcomeMessage p {
-  color: #666666;
   max-width: 400px;
   line-height: 1.6;
 }
@@ -86,6 +78,7 @@
   display: flex;
   gap: 0.75rem;
   max-width: 100%;
+  color: #f0f0f0;
 }
 
 .message.user {
@@ -114,7 +107,7 @@
 
 .messageContent {
   flex: 1;
-  max-width: calc(100% - 48px);
+  max-width: calc(70% - 48px);
 }
 
 .message.user .messageContent {
@@ -125,14 +118,19 @@
 
 .messageText {
   background: #667eea;
-  color: white;
   padding: 0.75rem 1rem;
   border-radius: 18px;
   word-wrap: break-word;
-  max-width: 100%;
+}
+
+.textMessageWrapper {
   max-height: 100px;
   overflow-y: hidden;
   text-overflow: ellipsis;
+}
+
+.textLayer {
+  padding: .25rem;
 }
 
 .messageExtras {
@@ -141,7 +139,7 @@
   justify-content: end;
 }
 
-.messageText.expanded {
+.messageText.expanded .textMessageWrapper {
   max-height: none;
 }
 
@@ -158,13 +156,10 @@
 
 .message.user .messageText {
   background: #667eea;
-  color: white;
 }
 
 .message.assistant .messageText {
-  background: #ffffff;
-  color: #333333;
-  border: 1px solid #e5e5e5;
+  background: #334155;
 }
 
 .messageFiles {
@@ -231,8 +226,7 @@
 
 .inputContainer {
   padding: 1rem;
-  background: #ffffff;
-  border-top: 1px solid #e5e5e5;
+  background: transparent;
 }
 
 .fileUploadSection {
@@ -243,8 +237,6 @@
   display: flex;
   align-items: flex-end;
   gap: 0.75rem;
-  background: #f8f9fa;
-  border: 1px solid #e5e5e5;
   border-radius: 24px;
   padding: 0.5rem;
   transition: border-color 0.2s ease;
@@ -258,22 +250,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  padding: .5rem;
   border-radius: 50%;
-  background: #f0f0f0;
-  color: #666666;
   transition: all 0.2s ease;
+  background: #f0f0f0;
+  margin-bottom: 1.5rem;
 }
 
 .attachButton:hover:not(:disabled) {
-  background: #e0e0e0;
-  color: #333333;
+  /* background: #e0e0e0;
+  color: #333333; */
 }
 
 .attachButton.active {
-  background: #667eea;
-  color: white;
+  /* background: #667eea; */
+  /* color: white; */
 }
 
 .attachButton:disabled {

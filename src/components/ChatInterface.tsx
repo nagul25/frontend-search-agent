@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
-import TextInput from './TextInput';
 import FileUpload from './FileUpload';
 import type { Message, UploadedFile } from '../types';
-import { chatService, healthCheck } from '../services/api';
+import { chatService } from '../services/api';
 import styles from '../styles/ChatInterface.module.css';
+import { ChatTextInput } from '../molecules';
 
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -74,6 +74,7 @@ const ChatInterface: React.FC = () => {
 
   const toggleFileUpload = () => {
     setShowFileUpload(!showFileUpload);
+    setUploadedFiles([]);
   };
 
   const toggleAnswerExpansion = () => {
@@ -104,25 +105,29 @@ const ChatInterface: React.FC = () => {
                   {message.role === 'user' ? <User size={20} /> : <Bot size={20} />}
                 </div>
                 <div className={styles.messageContent}>
-                  <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
-                    {message.content}
+                  <div className={`${styles.textLayer}`}>
+                    <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
+                      <div className={styles.textMessageWrapper}>
+                        {message.content}
+                      </div>
+                    </div>
                   </div>
                   <div className={styles.messageExtras}>
-                  {message.content.length > 300 && (
-                    <span
-                      className={styles.showMoreButton}
-                      onClick={toggleAnswerExpansion}
-                    >
-                      {showMoreAnswer ? 'Show Less' : 'Show More'}
-                    </span>
-                  )}
+                    {message.content.length > 300 && (
+                      <span
+                        className={styles.showMoreButton}
+                        onClick={toggleAnswerExpansion}
+                      >
+                        {showMoreAnswer ? 'Show Less' : 'Show More'}
+                      </span>
+                    )}
 
-                  {message.files && message.files.length > 0 && (
-                    <div className={styles.messageFiles}>
-                      <Paperclip size={16} />
-                      <span>{message.files.length} file(s) attached</span>
-                    </div>
-                  )}
+                    {message.files && message.files.length > 0 && (
+                      <div className={styles.messageFiles}>
+                        <Paperclip size={16} />
+                        <span>{message.files.length} file(s) attached</span>
+                      </div>
+                    )}
                   </div>
                   <div className={styles.messageTimestamp}>
                     {formatTimestamp(message.timestamp)}
@@ -155,20 +160,21 @@ const ChatInterface: React.FC = () => {
             <FileUpload
               files={uploadedFiles}
               onFilesChange={setUploadedFiles}
+              onToggleFileDrop={toggleFileUpload}
             />
           </div>
         )}
-        
-        <div className={styles.inputWrapper}>
-          <button
+
+        {/* <div className={styles.inputWrapper}> */}
+        {/* <button
             type="button"
             onClick={toggleFileUpload}
             className={`${styles.attachButton} ${showFileUpload ? styles.active : ''}`}
             disabled={isLoading}
           >
-            <Paperclip size={20} />
+            <Paperclip fill='#295dc7' size={28} />
           </button>
-          
+
           <div className={styles.textInputWrapper}>
             <TextInput
               value={inputValue}
@@ -177,8 +183,9 @@ const ChatInterface: React.FC = () => {
               disabled={isLoading}
               placeholder="Message ARB..."
             />
-          </div>
-        </div>
+          </div> */}
+        <ChatTextInput inputValue={inputValue} onChange={setInputValue} onSend={handleSendMessage} toggleFileUpload={toggleFileUpload} />
+        {/* </div> */}
       </div>
     </div>
   );

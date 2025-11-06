@@ -24,6 +24,7 @@
   overflow-y: auto;
   background: transparent;
   color: #333333;
+  border-radius: 20px;
 }
 
 .textInput::placeholder {
@@ -39,11 +40,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
-  background: #667eea;
-  color: white;
+  padding: .5rem;
+  background: #f0f0f0;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }

@@ -7,7 +7,7 @@
 .dropZone {
   border: 2px dashed #cccccc;
   border-radius: 12px;
-  padding: 2rem;
+  padding: .5rem;
   text-align: center;
   background: #fafafa;
   transition: all 0.2s ease;
@@ -141,20 +141,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
   border-radius: 4px;
-  background: #ff6b6b;
+  background-color: transparent;
   color: white;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
-.removeButton:hover {
-  background: #ff5252;
-  transform: scale(1.1);
+.removeButton:hover,  .closeButton:hover {
+  border: none;
 }
+
+ .closeButton:hover {
+  opacity: 1;
+ }
 
 .removeButton:active {
   transform: scale(0.95);
+}
+
+.closeButton {
+  display: block;
+  margin-left: auto;
+  background-color: transparent;
+  padding: 1rem;
+  opacity: 0.8;
 }
