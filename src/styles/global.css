@@ -10,14 +10,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffffff;
-  color: #333333;
-  line-height: 1.5;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+  color: #1e293b;
+  line-height: 1.6;
+  overflow: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #4f46e5;
 }
 
 input, textarea {
@@ -26,9 +32,22 @@ input, textarea {
   outline: none;
 }
 
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 ul, ol {
@@ -40,20 +59,37 @@ img {
   height: auto;
 }
 
-/* Scrollbar styling */
+/* Enhanced scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
+  background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: linear-gradient(180deg, #818cf8 0%, #a78bfa 100%);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #1e293b;
+}
+
+::-moz-selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #1e293b;
 }
