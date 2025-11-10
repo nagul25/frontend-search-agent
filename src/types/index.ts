@@ -42,5 +42,5 @@ export type QueryRequestResponseType = {
 export interface ApiResponse<T> {
   data: T;
   status: number;
-  message: string;
+  message?: string;
 }
