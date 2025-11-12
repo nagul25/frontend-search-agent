@@ -185,7 +185,7 @@
 
 .messageContent {
   flex: 1;
-  max-width: calc(70% - 56px);
+  max-width: calc(80% - 56px);
 }
 
 .message.user .messageContent {
@@ -201,7 +201,8 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  line-height: 1.6;
+  line-height: 1.8;
+  font-size: 0.95rem;
 }
 
 .messageText:hover {
@@ -210,9 +211,101 @@
 }
 
 .textMessageWrapper {
-  max-height: 100px;
-  overflow-y: hidden;
+  max-height: 150px;
+  overflow-y: auto;
   text-overflow: ellipsis;
+}
+
+.textMessageWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textMessageWrapper::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 3px;
+}
+
+.textMessageWrapper::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.messageParagraph {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.messageParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.toolEntry {
+  margin: 0.5rem 0 1.25rem 0;
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.05);
+  border-left: 3px solid rgba(99, 102, 241, 0.4);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.toolEntry:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-left-color: rgba(99, 102, 241, 0.6);
+}
+
+.toolEntry:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.toolName {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #4f46e5;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.toolAttributes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toolAttribute {
+  padding: 0.35rem 0.65rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  transition: background 0.2s ease;
+}
+
+.toolAttribute:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.message.assistant .toolEntry {
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.message.user .toolEntry {
+  background: rgba(255, 255, 255, 0.2);
+  border-left-color: rgba(255, 255, 255, 0.5);
+}
+
+.message.user .toolName {
+  color: rgba(255, 255, 255, 0.95);
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.message.user .toolAttribute {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .textLayer {
