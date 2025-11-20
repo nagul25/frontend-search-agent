@@ -240,6 +240,20 @@
   margin-bottom: 0;
 }
 
+.messageHeader {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.messageFooter {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
 .toolEntry {
   margin: 0.5rem 0 1.25rem 0;
   padding: 1rem;

@@ -1,0 +1,130 @@
+.tableContainer {
+  margin: 1rem 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableWrapper {
+  min-width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toolsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.toolsTable thead {
+  background-color: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.toolsTable th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background-color: #f9fafb;
+  z-index: 10;
+}
+
+.toolsTable tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.15s ease;
+}
+
+.toolsTable tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.toolsTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.toolsTable td {
+  padding: 0.75rem 1rem;
+  color: #4b5563;
+  vertical-align: top;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.numberColumn {
+  width: 50px;
+  text-align: center !important;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Field-specific styling */
+.field_name {
+  font-weight: 600;
+  color: #1f2937;
+  min-width: 150px;
+}
+
+.field_description {
+  max-width: 400px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.field_metaTags {
+  max-width: 300px;
+  white-space: normal;
+  font-size: 0.8rem;
+}
+
+.field_status {
+  min-width: 120px;
+}
+
+.field_capabilities,
+.field_subCapability {
+  min-width: 150px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .toolsTable {
+    font-size: 0.75rem;
+  }
+
+  .toolsTable th,
+  .toolsTable td {
+    padding: 0.5rem;
+  }
+
+  .field_description {
+    max-width: 250px;
+  }
+}
+
+/* Scrollbar styling for the table wrapper */
+.tableWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
+import ToolsTable from './ToolsTable';
 import type { Message, UploadedFile } from '../types';
 import { chatService } from '../services/api';
+import { parseToolsFromResponse } from '../utils/toolParser';
 import styles from '../styles/ChatInterface.module.css';
 import { ChatTextInput } from '../molecules';
 
@@ -73,49 +75,38 @@ const ChatInterface: React.FC = () => {
   };
 
   const formatMessageContent = (content: string): JSX.Element => {
-    // Split content into paragraphs
+    // Parse the content to check for tools
+    const parsed = parseToolsFromResponse(content);
+    
+    if (parsed.hasTools) {
+      return (
+        <>
+          {parsed.headerText && (
+            <div className={styles.messageHeader}>
+              {parsed.headerText.split('\n').map((line, idx) => (
+                <p key={idx} className={styles.messageParagraph}>{line}</p>
+              ))}
+            </div>
+          )}
+          <ToolsTable tools={parsed.tools} />
+          {parsed.footerText && (
+            <div className={styles.messageFooter}>
+              {parsed.footerText.split('\n').map((line, idx) => (
+                <p key={idx} className={styles.messageParagraph}>{line}</p>
+              ))}
+            </div>
+          )}
+        </>
+      );
+    }
+    
+    // Original formatting for non-tool content
     const paragraphs = content.split(/\n\n+/g);
     
     return (
       <>
         {paragraphs.map((paragraph, index) => {
           const text = paragraph.trim();
-          
-          // Check if this is a tool entry (starts with "- " and contains multiple " - " separators)
-          if (text.startsWith('- ') && text.split(' - ').length > 3) {
-            // Split tool attributes by " - "
-            const parts = text.split(' - ');
-            const firstPart = parts[0].substring(2); // Remove "- " prefix
-            
-            // Extract just the tool name (before parentheses if present)
-            let toolName = firstPart;
-            const manufacturerMatch = firstPart.match(/^(.+?)\s*\((.+?)\)$/);
-            
-            const allAttributes = [];
-            
-            if (manufacturerMatch) {
-              // Tool name without manufacturer
-              toolName = manufacturerMatch[1].trim();
-              // Add manufacturer as first attribute
-              allAttributes.push(`Manufacturer: ${manufacturerMatch[2]}`);
-            }
-            
-            // Add all other attributes
-            allAttributes.push(...parts.slice(1).map(attr => attr.trim()));
-            
-            return (
-              <div key={index} className={styles.toolEntry}>
-                <div className={styles.toolName}>{toolName}</div>
-                <div className={styles.toolAttributes}>
-                  {allAttributes.map((attr, attrIndex) => (
-                    <div key={attrIndex} className={styles.toolAttribute}>
-                      {attr}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          }
           
           // Regular paragraph - check for sentence splits
           const sentences = text.split(/\. (?=[A-Z])/g);
