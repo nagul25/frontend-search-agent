@@ -1,12 +1,13 @@
 .tableContainer {
   margin: 1rem 0;
   width: 100%;
-  overflow-x: auto;
+  /* overflow: auto; */
 }
 
 .tableWrapper {
   min-width: 100%;
-  overflow-x: auto;
+  max-height: 450px;
+  overflow: auto;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -53,7 +54,7 @@
   padding: 0.75rem 1rem;
   color: #4b5563;
   vertical-align: top;
-  max-width: 300px;
+  min-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -73,13 +74,13 @@
 }
 
 .field_description {
-  max-width: 400px;
+  min-width: 400px;
   line-height: 1.5;
   white-space: normal;
 }
 
 .field_metaTags {
-  max-width: 300px;
+  min-width: 300px;
   white-space: normal;
   font-size: 0.8rem;
 }

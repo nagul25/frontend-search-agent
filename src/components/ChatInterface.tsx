@@ -14,7 +14,7 @@ const ChatInterface: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
-  const [showMoreAnswer, setShowMoreAnswer] = useState(false);
+  const [showMoreAnswer, setShowMoreAnswer] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -142,9 +142,9 @@ const ChatInterface: React.FC = () => {
     setUploadedFiles([]);
   };
 
-  const toggleAnswerExpansion = () => {
-    setShowMoreAnswer(!showMoreAnswer);
-  }
+  // const toggleAnswerExpansion = () => {
+  //   setShowMoreAnswer(!showMoreAnswer);
+  // }
 
   return (
     <div className={styles.chatInterface}>
@@ -156,7 +156,7 @@ const ChatInterface: React.FC = () => {
         {messages.length === 0 ? (
           <div className={styles.welcomeMessage}>
             <Bot size={48} className={styles.welcomeIcon} />
-            <h2>Welcome to ARB Assistant</h2>
+            <h2>Welcome to Triple A Assistant</h2>
             <p>Start a conversation by typing your message below. You can also upload files to get help with documents, images, or other content.</p>
           </div>
         ) : (
@@ -181,14 +181,14 @@ const ChatInterface: React.FC = () => {
                     </div>
                   </div>
                   <div className={styles.messageExtras}>
-                    {message.content.length > 300 && (
+                    {/* {message.content.length > 300 && (
                       <span
                         className={styles.showMoreButton}
                         onClick={toggleAnswerExpansion}
                       >
                         {showMoreAnswer ? 'Show Less' : 'Show More'}
                       </span>
-                    )}
+                    )} */}
 
                     {message.files && message.files.length > 0 && (
                       <div className={styles.messageFiles}>

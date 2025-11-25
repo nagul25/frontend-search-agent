@@ -185,7 +185,7 @@
 
 .messageContent {
   flex: 1;
-  max-width: calc(80% - 56px);
+  max-width: calc(90% - 56px);
 }
 
 .message.user .messageContent {
@@ -211,8 +211,8 @@
 }
 
 .textMessageWrapper {
-  max-height: 150px;
-  overflow-y: auto;
+  /* max-height: 150px; */
+  /* overflow-y: auto; */
   text-overflow: ellipsis;
 }
 
