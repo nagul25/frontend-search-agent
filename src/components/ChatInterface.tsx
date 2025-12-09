@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, type JSX } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
 import ToolsTable from './ToolsTable';
@@ -14,7 +14,7 @@ const ChatInterface: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
-  const [showMoreAnswer, setShowMoreAnswer] = useState(true);
+  const [showMoreAnswer] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {

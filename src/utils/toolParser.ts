@@ -42,8 +42,8 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
   // Split content into sections
   const lines = content.split('\n');
   const toolLines: string[] = [];
-  let headerLines: string[] = [];
-  let footerLines: string[] = [];
+  const headerLines: string[] = [];
+  const footerLines: string[] = [];
   let inToolSection = false;
 
   for (const line of lines) {
@@ -82,7 +82,7 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
     // Split by " - " to get individual attributes
     const parts = contentWithoutNumber.split(' - ');
     
-    const tool: Tool = { number };
+    const tool: Tool = { number, name: '' };
     
     for (const part of parts) {
       const trimmedPart = part.trim();
