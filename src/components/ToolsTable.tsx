@@ -5,13 +5,15 @@ interface Tool {
   number: number;
   name: string;
   manufacturer?: string;
+  version?: string;
   status?: string;
   capabilities?: string;
   subCapability?: string;
-  version?: string;
   standardCategory?: string;
   earReferenceId?: string;
   capabilityManager?: string;
+  standardsComments?: string;
+  eaNotes?: string;
   description?: string;
   metaTags?: string[];
   [key: string]: any; // For any additional fields
@@ -38,13 +40,15 @@ const ToolsTable: React.FC<ToolsTableProps> = ({ tools }) => {
   const fieldOrder = [
     'name',
     'manufacturer',
+    'version',
     'status',
     'capabilities',
     'subCapability',
-    'version',
-    'standardCategory',
     'earReferenceId',
     'capabilityManager',
+    'standardCategory',
+    'standardsComments',
+    'eaNotes',
     'description',
     'metaTags'
   ];
