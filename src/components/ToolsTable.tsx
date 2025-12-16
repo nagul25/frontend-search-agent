@@ -1,108 +1,231 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
+  createColumnHelper,
+  type SortingState,
+  type ColumnFiltersState,
+} from '@tanstack/react-table';
 import styles from '../styles/ToolsTable.module.css';
 
-interface Tool {
-  number: number;
+export interface Tool {
   name: string;
   manufacturer?: string;
-  status?: string;
-  capabilities?: string;
-  subCapability?: string;
   version?: string;
-  standardCategory?: string;
-  earReferenceId?: string;
-  capabilityManager?: string;
+  tebStatus?: string;
+  capability?: string;
+  subCapability?: string;
   description?: string;
-  metaTags?: string[];
-  [key: string]: any; // For any additional fields
+  standardCategory?: string;
+  eaReferenceId?: string;
+  capabilityManager?: string;
+  metaTags?: string;
+  standardsComments?: string;
+  eaNotes?: string;
+  [key: string]: any;
 }
 
 interface ToolsTableProps {
   tools: Tool[];
 }
 
+const columnHelper = createColumnHelper<Tool>();
+
 const ToolsTable: React.FC<ToolsTableProps> = ({ tools }) => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState('');
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('name', {
+        header: 'Name',
+        cell: (info) => info.getValue(),
+        size: 150,
+      }),
+      columnHelper.accessor('manufacturer', {
+        header: 'Manufacturer',
+        cell: (info) => info.getValue() || '-',
+        size: 120,
+      }),
+      columnHelper.accessor('version', {
+        header: 'Version',
+        cell: (info) => info.getValue() || '-',
+        size: 100,
+      }),
+      columnHelper.accessor('tebStatus', {
+        header: 'TEB Status',
+        cell: (info) => info.getValue() || '-',
+        size: 140,
+      }),
+      columnHelper.accessor('capability', {
+        header: 'Capability',
+        cell: (info) => info.getValue() || '-',
+        size: 140,
+      }),
+      columnHelper.accessor('subCapability', {
+        header: 'Sub-Capability',
+        cell: (info) => info.getValue() || '-',
+        size: 140,
+      }),
+      columnHelper.accessor('standardCategory', {
+        header: 'Standard Category',
+        cell: (info) => info.getValue() || '-',
+        size: 150,
+      }),
+      columnHelper.accessor('eaReferenceId', {
+        header: 'EA Reference ID',
+        cell: (info) => info.getValue() || '-',
+        size: 130,
+      }),
+      columnHelper.accessor('capabilityManager', {
+        header: 'Capability Manager',
+        cell: (info) => info.getValue() || '-',
+        size: 150,
+      }),
+      columnHelper.accessor('metaTags', {
+        header: 'Meta Tags',
+        cell: (info) => (
+          <div className={styles.metaTags}>
+            {info.getValue() || '-'}
+          </div>
+        ),
+        size: 200,
+      }),
+      columnHelper.accessor('standardsComments', {
+        header: 'Standards Comments',
+        cell: (info) => (
+          <div className={styles.description}>
+            {info.getValue() || '-'}
+          </div>
+        ),
+        size: 200,
+      }),
+      columnHelper.accessor('eaNotes', {
+        header: 'EA Notes',
+        cell: (info) => (
+          <div className={styles.description}>
+            {info.getValue() || '-'}
+          </div>
+        ),
+        size: 200,
+      }),
+      columnHelper.accessor('description', {
+        header: 'Description',
+        cell: (info) => (
+          <div className={styles.description}>
+            {info.getValue() || '-'}
+          </div>
+        ),
+        size: 250,
+      }),
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data: tools,
+    columns,
+    state: {
+      sorting,
+      columnFilters,
+      globalFilter,
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
   if (tools.length === 0) return null;
-
-  // Determine which fields are present across all tools
-  const allFields = new Set<string>();
-  tools.forEach(tool => {
-    Object.keys(tool).forEach(key => {
-      if (key !== 'number' && tool[key] !== undefined) {
-        allFields.add(key);
-      }
-    });
-  });
-
-  // Define the preferred order of fields
-  const fieldOrder = [
-    'name',
-    'manufacturer',
-    'status',
-    'capabilities',
-    'subCapability',
-    'version',
-    'standardCategory',
-    'earReferenceId',
-    'capabilityManager',
-    'description',
-    'metaTags'
-  ];
-
-  // Sort fields based on preferred order, with unknowns at the end
-  const sortedFields = Array.from(allFields).sort((a, b) => {
-    const indexA = fieldOrder.indexOf(a);
-    const indexB = fieldOrder.indexOf(b);
-    
-    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
-    return indexA - indexB;
-  });
-
-  const formatFieldName = (field: string): string => {
-    // Convert camelCase to readable format
-    return field
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .trim();
-  };
-
-  const formatValue = (value: any): string => {
-    if (Array.isArray(value)) {
-      return value.join(', ');
-    }
-    if (typeof value === 'object' && value !== null) {
-      return JSON.stringify(value);
-    }
-    return String(value || '-');
-  };
 
   return (
     <div className={styles.tableContainer}>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search tools..."
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
+
       <div className={styles.tableWrapper}>
         <table className={styles.toolsTable}>
           <thead>
-            <tr>
-              <th className={styles.numberColumn}>#</th>
-              {sortedFields.map(field => (
-                <th key={field}>{formatFieldName(field)}</th>
-              ))}
-            </tr>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className={styles.tableHeader}
+                    style={{
+                      width: header.getSize(),
+                      cursor: header.column.getCanSort() ? 'pointer' : 'default',
+                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div className={styles.headerContent}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      <span className={styles.sortIndicator}>
+                        {header.column.getIsSorted() ? (
+                          header.column.getIsSorted() === 'desc' ? ' ▼' : ' ▲'
+                        ) : (
+                          ''
+                        )}
+                      </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
           </thead>
           <tbody>
-            {tools.map((tool) => (
-              <tr key={tool.number}>
-                <td className={styles.numberColumn}>{tool.number}</td>
-                {sortedFields.map(field => (
-                  <td key={field} className={styles[`field_${field}`] || ''}>
-                    {formatValue(tool[field])}
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className={styles.tableRow}>
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    style={{
+                      width: cell.column.getSize(),
+                    }}
+                    className={styles.tableCell}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className={styles.pagination}>
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+          className={styles.paginationButton}
+        >
+          Previous
+        </button>
+        <span className={styles.pageInfo}>
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        </span>
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+          className={styles.paginationButton}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

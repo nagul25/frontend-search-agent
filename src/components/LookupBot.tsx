@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect, type JSX } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
-import ToolsTable from './ToolsTable';
+import ToolsTable, { type Tool } from './ToolsTable';
 import type { Message, UploadedFile } from '../types';
 import { chatService } from '../services/api';
 import { parseToolsFromResponse } from '../utils/toolParser';
 import styles from '../styles/ChatInterface.module.css';
 import { ChatTextInput } from '../molecules';
 
-const ChatInterface: React.FC = () => {
+const LookupBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
@@ -47,12 +47,13 @@ const ChatInterface: React.FC = () => {
         message: inputValue,
         files: uploadedFiles.map(file => file.file),
       });
-      console.log("Chat Response: ", response.rag_response?.answer);
+      console.log("Chat Response: ", response);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: response.rag_response?.answer || "No response from assistant.",
         role: 'assistant',
         timestamp: new Date(),
+        tools: response.rag_response?.tools || [],
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -74,10 +75,10 @@ const ChatInterface: React.FC = () => {
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const formatMessageContent = (content: string): JSX.Element => {
+  const formatMessageContent = (content: string, tools?: Array<Tool>): JSX.Element => {
     // Parse the content to check for tools
     const parsed = parseToolsFromResponse(content);
-    
+    console.log('parsed: ', parsed);
     if (parsed.hasTools) {
       return (
         <>
@@ -88,7 +89,6 @@ const ChatInterface: React.FC = () => {
               ))}
             </div>
           )}
-          <ToolsTable tools={parsed.tools} />
           {parsed.footerText && (
             <div className={styles.messageFooter}>
               {parsed.footerText.split('\n').map((line, idx) => (
@@ -96,21 +96,22 @@ const ChatInterface: React.FC = () => {
               ))}
             </div>
           )}
+          <ToolsTable tools={tools || []} />
         </>
       );
     }
-    
+
     // Original formatting for non-tool content
     const paragraphs = content.split(/\n\n+/g);
-    
+
     return (
       <>
         {paragraphs.map((paragraph, index) => {
           const text = paragraph.trim();
-          
+
           // Regular paragraph - check for sentence splits
           const sentences = text.split(/\. (?=[A-Z])/g);
-          
+
           if (sentences.length > 1) {
             return (
               <p key={index} className={styles.messageParagraph}>
@@ -126,7 +127,7 @@ const ChatInterface: React.FC = () => {
               </p>
             );
           }
-          
+
           return (
             <p key={index} className={styles.messageParagraph}>
               {text}
@@ -148,10 +149,6 @@ const ChatInterface: React.FC = () => {
 
   return (
     <div className={styles.chatInterface}>
-      <div className={styles.chatHeader}>
-        <h1 className={styles.chatTitle}>ARB Assistant</h1>
-      </div>
-
       <div className={styles.messagesContainer}>
         {messages.length === 0 ? (
           <div className={styles.welcomeMessage}>
@@ -173,8 +170,8 @@ const ChatInterface: React.FC = () => {
                   <div className={`${styles.textLayer}`}>
                     <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
                       <div className={styles.textMessageWrapper}>
-                        {message.role === 'assistant' 
-                          ? formatMessageContent(message.content)
+                        {message.role === 'assistant'
+                          ? formatMessageContent(message.content, message.tools)
                           : message.content
                         }
                       </div>
@@ -252,11 +249,17 @@ const ChatInterface: React.FC = () => {
               placeholder="Message ARB..."
             />
           </div> */}
-        <ChatTextInput inputValue={inputValue} onChange={setInputValue} onSend={handleSendMessage} toggleFileUpload={toggleFileUpload} />
+        <ChatTextInput
+          inputValue={inputValue}
+          onChange={setInputValue}
+          onSend={handleSendMessage}
+          toggleFileUpload={toggleFileUpload}
+          showUploadIcon={false}
+        />
         {/* </div> */}
       </div>
     </div>
   );
 };
 
-export default ChatInterface;
+export default LookupBot;

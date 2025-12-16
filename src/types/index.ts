@@ -1,9 +1,12 @@
+import type { Tool } from "../components/ToolsTable";
+
 export interface Message {
   id: string;
   content: string;
   role: "user" | "assistant";
   timestamp: Date;
   files?: UploadedFile[];
+  tools?: Tool[];
 }
 
 export interface UploadedFile {
@@ -32,6 +35,7 @@ export type QueryRequestResponseType = {
     answer: string;
     metadata?: Record<string, unknown>;
     sources?: Array<Record<string, unknown>>;
+    tools?: Array<Record<string, unknown>>;
   };
   upload_info?: {
     message: string;

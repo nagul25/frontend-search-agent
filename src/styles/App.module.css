@@ -8,6 +8,28 @@
   overflow: hidden;
 }
 
-.app > * {
-  flex: 1;
+.header {
+  height: 60px;
+  background: linear-gradient(135deg, #8eacdc 0%, #6366f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.headerTitle {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 60px;
+}
+
+.actionBtns {
+  display: flex;
+  gap: 8px;
+  margin-right: 24px;
+}
+
+.activeLink {
+  font-weight: 800;
 }
