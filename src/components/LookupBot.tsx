@@ -96,7 +96,7 @@ const LookupBot: React.FC = () => {
               ))}
             </div>
           )}
-          <ToolsTable tools={tools || []} />
+          {tools && tools.length > 0 && <ToolsTable tools={tools || []} />}
         </>
       );
     }
@@ -134,6 +134,7 @@ const LookupBot: React.FC = () => {
             </p>
           );
         })}
+        {tools && tools.length > 0 && <ToolsTable tools={tools || []} />}
       </>
     );
   };

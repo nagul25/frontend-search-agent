@@ -29,13 +29,9 @@ export interface Tool {
   [key: string]: any;
 }
 
-interface ToolsTableProps {
-  tools: Tool[];
-}
-
 const columnHelper = createColumnHelper<Tool>();
 
-const ToolsTable: React.FC<ToolsTableProps> = ({ tools }) => {
+const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');

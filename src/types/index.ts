@@ -35,7 +35,7 @@ export type QueryRequestResponseType = {
     answer: string;
     metadata?: Record<string, unknown>;
     sources?: Array<Record<string, unknown>>;
-    tools?: Array<Record<string, unknown>>;
+    tools?: Tool[];
   };
   upload_info?: {
     message: string;

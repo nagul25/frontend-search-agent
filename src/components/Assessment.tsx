@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, type JSX } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
-import ToolsTable from './ToolsTable';
 import type { Message, UploadedFile } from '../types';
 import { chatService } from '../services/api';
 import { parseToolsFromResponse } from '../utils/toolParser';
@@ -42,7 +41,7 @@ const AssessmentBot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const {message, rag_response, upload_info} = await chatService.validateAssessment({
+      const {message, rag_response} = await chatService.validateAssessment({
         message: inputValue,
         files: uploadedFiles.map(file => file.file),
       });
@@ -86,7 +85,7 @@ const AssessmentBot: React.FC = () => {
               ))}
             </div>
           )}
-          {parsed.tools ? <ToolsTable tools={parsed.tools} /> : null }
+          {/* {parsed.tools ? <ToolsTable tools={parsed.tools} /> : null } */}
           {parsed.footerText && (
             <div className={styles.messageFooter}>
               {parsed.footerText.split('\n').map((line, idx) => (
