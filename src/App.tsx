@@ -13,12 +13,12 @@ const App: React.FC = () => {
             <NavLink to="/"
               className={({ isActive }) => isActive ? styles.activeLink : ''}
               style={{ textDecoration: 'none', color: 'white', marginRight: '12px' }}>
-              Lookup Bot
+              Lookup Agent
             </NavLink>
             <NavLink to="/assessment"
               className={({ isActive }) => isActive ? styles.activeLink : ''}
               style={{ textDecoration: 'none', color: 'white' }}>
-              Assessment Bot
+              Assessment Agent
             </NavLink>
           </div>
         </header>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ChatRequest, ApiResponse, QueryRequestResponseType } from "../types";
+import type { ChatRequest, ApiResponse, QueryRequestResponseType, ValidateAssessmentResponseType } from "../types";
 
 // Vite only exposes env vars that start with VITE_
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -38,12 +38,12 @@ export const chatService = {
     }
   },
 
-  async validateAssessment(request: ChatRequest): Promise<QueryRequestResponseType> {
+  async validateAssessment(request: ChatRequest): Promise<ValidateAssessmentResponseType> {
     const threadId = sessionStorage.getItem('threadId');
     const formData = new FormData();
     formData.append("prompt", request.message);
-
-    if (threadId) {
+    console.log("thread id: ", threadId);
+    if (threadId && threadId.length > 0 && threadId !== "undefined") {
       formData.append("thread_id", threadId || "");
     }
 

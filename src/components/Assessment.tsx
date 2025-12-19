@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, type JSX } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
 import type { Message, UploadedFile } from '../types';
 import { chatService } from '../services/api';
-import { parseToolsFromResponse } from '../utils/toolParser';
 import { ChatTextInput } from '../molecules';
 import styles from '../styles/ChatInterface.module.css';
+import AssistantMarkdownMessage from '../molecules/AssistantMarkdown';
 
 const AssessmentBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -41,14 +41,14 @@ const AssessmentBot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const {message, rag_response} = await chatService.validateAssessment({
+      const {message, assessment} = await chatService.validateAssessment({
         message: inputValue,
         files: uploadedFiles.map(file => file.file),
       });
       console.log("Chat Response: ", message);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: rag_response?.answer || message || "No response from assistant.",
+        content: assessment || message || "No response from assistant.",
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -70,68 +70,6 @@ const AssessmentBot: React.FC = () => {
 
   const formatTimestamp = (timestamp: Date): string => {
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
-  const formatMessageContent = (content: string): JSX.Element => {
-    // Parse the content to check for tools
-    const parsed = parseToolsFromResponse(content);
-    if (parsed.hasTools) {
-      return (
-        <>
-          {parsed.headerText && (
-            <div className={styles.messageHeader}>
-              {parsed.headerText.split('\n').map((line, idx) => (
-                <p key={idx} className={styles.messageParagraph}>{line}</p>
-              ))}
-            </div>
-          )}
-          {/* {parsed.tools ? <ToolsTable tools={parsed.tools} /> : null } */}
-          {parsed.footerText && (
-            <div className={styles.messageFooter}>
-              {parsed.footerText.split('\n').map((line, idx) => (
-                <p key={idx} className={styles.messageParagraph}>{line}</p>
-              ))}
-            </div>
-          )}
-        </>
-      );
-    }
-    
-    // Original formatting for non-tool content
-    const paragraphs = content.split(/\n\n+/g);
-    
-    return (
-      <>
-        {paragraphs.map((paragraph, index) => {
-          const text = paragraph.trim();
-          
-          // Regular paragraph - check for sentence splits
-          const sentences = text.split(/\. (?=[A-Z])/g);
-          
-          if (sentences.length > 1) {
-            return (
-              <p key={index} className={styles.messageParagraph}>
-                {sentences.map((sentence, sentIndex) => {
-                  const trimmedSentence = sentence.trim();
-                  const needsPeriod = !trimmedSentence.match(/[.!?]$/);
-                  return (
-                    <span key={sentIndex}>
-                      {trimmedSentence}{needsPeriod ? '.' : ''}{sentIndex < sentences.length - 1 ? ' ' : ''}
-                    </span>
-                  );
-                })}
-              </p>
-            );
-          }
-          
-          return (
-            <p key={index} className={styles.messageParagraph}>
-              {text}
-            </p>
-          );
-        })}
-      </>
-    );
   };
 
   const toggleFileUpload = () => {
@@ -163,7 +101,7 @@ const AssessmentBot: React.FC = () => {
                     <div className={`${styles.messageText}`}>
                       <div className={styles.textMessageWrapper}>
                         {message.role === 'assistant' 
-                          ? formatMessageContent(message.content)
+                          ? <AssistantMarkdownMessage content={message.content} />
                           : message.content
                         }
                       </div>

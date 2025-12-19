@@ -43,6 +43,17 @@ export type QueryRequestResponseType = {
   };
 }
 
+export type ValidateAssessmentResponseType = {
+  message?: string;
+  images_analyzed?: number;
+  assessment?: string;
+  thread_id?: string;
+    upload_info?: {
+    message: string;
+    uploaded_files: Array<Record<string, unknown>>;
+  };
+}
+
 export interface ApiResponse<T> {
   data: T;
   status: number;

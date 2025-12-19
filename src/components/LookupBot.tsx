@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect, type JSX } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bot, User, Paperclip } from 'lucide-react';
 import FileUpload from './FileUpload';
-import ToolsTable, { type Tool } from './ToolsTable';
 import type { Message, UploadedFile } from '../types';
 import { chatService } from '../services/api';
-import { parseToolsFromResponse } from '../utils/toolParser';
 import styles from '../styles/ChatInterface.module.css';
 import { ChatTextInput } from '../molecules';
+import AssistantMarkdownMessage from '../molecules/AssistantMarkdown';
+
 
 const LookupBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -75,78 +75,10 @@ const LookupBot: React.FC = () => {
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const formatMessageContent = (content: string, tools?: Array<Tool>): JSX.Element => {
-    // Parse the content to check for tools
-    const parsed = parseToolsFromResponse(content);
-    console.log('parsed: ', parsed);
-    if (parsed.hasTools) {
-      return (
-        <>
-          {parsed.headerText && (
-            <div className={styles.messageHeader}>
-              {parsed.headerText.split('\n').map((line, idx) => (
-                <p key={idx} className={styles.messageParagraph}>{line}</p>
-              ))}
-            </div>
-          )}
-          {parsed.footerText && (
-            <div className={styles.messageFooter}>
-              {parsed.footerText.split('\n').map((line, idx) => (
-                <p key={idx} className={styles.messageParagraph}>{line}</p>
-              ))}
-            </div>
-          )}
-          {tools && tools.length > 0 && <ToolsTable tools={tools || []} />}
-        </>
-      );
-    }
-
-    // Original formatting for non-tool content
-    const paragraphs = content.split(/\n\n+/g);
-
-    return (
-      <>
-        {paragraphs.map((paragraph, index) => {
-          const text = paragraph.trim();
-
-          // Regular paragraph - check for sentence splits
-          const sentences = text.split(/\. (?=[A-Z])/g);
-
-          if (sentences.length > 1) {
-            return (
-              <p key={index} className={styles.messageParagraph}>
-                {sentences.map((sentence, sentIndex) => {
-                  const trimmedSentence = sentence.trim();
-                  const needsPeriod = !trimmedSentence.match(/[.!?]$/);
-                  return (
-                    <span key={sentIndex}>
-                      {trimmedSentence}{needsPeriod ? '.' : ''}{sentIndex < sentences.length - 1 ? ' ' : ''}
-                    </span>
-                  );
-                })}
-              </p>
-            );
-          }
-
-          return (
-            <p key={index} className={styles.messageParagraph}>
-              {text}
-            </p>
-          );
-        })}
-        {tools && tools.length > 0 && <ToolsTable tools={tools || []} />}
-      </>
-    );
-  };
-
   const toggleFileUpload = () => {
     setShowFileUpload(!showFileUpload);
     setUploadedFiles([]);
   };
-
-  // const toggleAnswerExpansion = () => {
-  //   setShowMoreAnswer(!showMoreAnswer);
-  // }
 
   return (
     <div className={styles.chatInterface}>
@@ -172,22 +104,14 @@ const LookupBot: React.FC = () => {
                     <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
                       <div className={styles.textMessageWrapper}>
                         {message.role === 'assistant'
-                          ? formatMessageContent(message.content, message.tools)
+                          // ? formatMessageContent(message.content, message.tools)
+                          ? <AssistantMarkdownMessage content={message.content} tools={message.tools} />
                           : message.content
                         }
                       </div>
                     </div>
                   </div>
                   <div className={styles.messageExtras}>
-                    {/* {message.content.length > 300 && (
-                      <span
-                        className={styles.showMoreButton}
-                        onClick={toggleAnswerExpansion}
-                      >
-                        {showMoreAnswer ? 'Show Less' : 'Show More'}
-                      </span>
-                    )} */}
-
                     {message.files && message.files.length > 0 && (
                       <div className={styles.messageFiles}>
                         <Paperclip size={16} />
