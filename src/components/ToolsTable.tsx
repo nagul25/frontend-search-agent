@@ -9,8 +9,10 @@ import {
   createColumnHelper,
   type SortingState,
   type ColumnFiltersState,
+  type CellContext,
 } from '@tanstack/react-table';
 import styles from '../styles/ToolsTable.module.css';
+import { useColumnConfig } from '../context/useColumnConfig';
 
 export interface Tool {
   name: string;
@@ -31,101 +33,39 @@ export interface Tool {
 
 const columnHelper = createColumnHelper<Tool>();
 
+const renderColumnCell = (label: string, info: CellContext<Tool, any>) => {
+  if (label === 'Meta Tags') {
+    return <div className={styles.metaTags}>{info.getValue() || '-'}</div>;
+  }
+  if (label === 'Standards Comments' || label === 'EA Notes' || label === 'Description') {
+    return <div className={styles.description}>{info.getValue() || '-'}</div>;
+  }
+  return info.getValue() || '-';
+};
+
 const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
+  const { columns } = useColumnConfig();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
 
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('name', {
-        header: 'Name',
-        cell: (info) => info.getValue(),
-        size: 150,
-      }),
-      columnHelper.accessor('manufacturer', {
-        header: 'Manufacturer',
-        cell: (info) => info.getValue() || '-',
-        size: 120,
-      }),
-      columnHelper.accessor('version', {
-        header: 'Version',
-        cell: (info) => info.getValue() || '-',
-        size: 100,
-      }),
-      columnHelper.accessor('tebStatus', {
-        header: 'TEB Status',
-        cell: (info) => info.getValue() || '-',
-        size: 140,
-      }),
-      columnHelper.accessor('capability', {
-        header: 'Capability',
-        cell: (info) => info.getValue() || '-',
-        size: 140,
-      }),
-      columnHelper.accessor('subCapability', {
-        header: 'Sub-Capability',
-        cell: (info) => info.getValue() || '-',
-        size: 140,
-      }),
-      columnHelper.accessor('standardCategory', {
-        header: 'Standard Category',
-        cell: (info) => info.getValue() || '-',
-        size: 150,
-      }),
-      columnHelper.accessor('eaReferenceId', {
-        header: 'EA Reference ID',
-        cell: (info) => info.getValue() || '-',
-        size: 130,
-      }),
-      columnHelper.accessor('capabilityManager', {
-        header: 'Capability Manager',
-        cell: (info) => info.getValue() || '-',
-        size: 150,
-      }),
-      columnHelper.accessor('metaTags', {
-        header: 'Meta Tags',
-        cell: (info) => (
-          <div className={styles.metaTags}>
-            {info.getValue() || '-'}
-          </div>
+  const tableColumns = useMemo(
+    () =>
+      columns
+        .filter((column) => column.enabled)
+        .map((column) =>
+          columnHelper.accessor(column.id as string, {
+            header: column.label,
+            cell: (info) => renderColumnCell(column.label, info),
+            size: 150, // Default size, can be customized
+          })
         ),
-        size: 200,
-      }),
-      columnHelper.accessor('standardsComments', {
-        header: 'Standards Comments',
-        cell: (info) => (
-          <div className={styles.description}>
-            {info.getValue() || '-'}
-          </div>
-        ),
-        size: 200,
-      }),
-      columnHelper.accessor('eaNotes', {
-        header: 'EA Notes',
-        cell: (info) => (
-          <div className={styles.description}>
-            {info.getValue() || '-'}
-          </div>
-        ),
-        size: 200,
-      }),
-      columnHelper.accessor('description', {
-        header: 'Description',
-        cell: (info) => (
-          <div className={styles.description}>
-            {info.getValue() || '-'}
-          </div>
-        ),
-        size: 250,
-      }),
-    ],
-    []
+    [columns]
   );
 
   const table = useReactTable({
     data: tools,
-    columns,
+    columns: tableColumns,
     state: {
       sorting,
       columnFilters,
