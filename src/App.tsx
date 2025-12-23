@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import styles from './styles/App.module.css';
 import { AssessmentBot, LookupBot, SettingsPage } from './components';
 import {Settings} from 'lucide-react';
 import { ColumnConfigProvider } from './context/ColumnConfigContext';
+import SettingsModal from './components/SettingsModal';
 
 
 const App: React.FC = () => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <ColumnConfigProvider>
       <Router>
@@ -24,11 +28,13 @@ const App: React.FC = () => {
                 style={{ textDecoration: 'none', color: 'white' }}>
                 Assessment Agent
               </NavLink>
-              <NavLink to="/settings"
-                className={({ isActive }) => isActive ? styles.activeLink : ''}
-                style={{ textDecoration: 'none', color: 'white' }}>
-                <Settings size={24} />
-              </NavLink>
+              <div
+                className={styles.activeLink}
+                style={{ textDecoration: 'none', color: 'white' }}
+                onClick={() => setIsOpen(true)}
+              >
+                <Settings size={24}/>
+              </div>
             </div>
           </header>
           <Routes>
@@ -37,6 +43,7 @@ const App: React.FC = () => {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<LookupBot />} />
           </Routes>
+          <SettingsModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>
       </Router>
     </ColumnConfigProvider>
