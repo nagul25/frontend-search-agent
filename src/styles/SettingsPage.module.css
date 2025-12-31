@@ -1,0 +1,19 @@
+.settingsPage {
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.columnList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.columnItem {
+  display: flex;
+  align-items: center;
+}

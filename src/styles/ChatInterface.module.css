@@ -185,7 +185,7 @@
 
 .messageContent {
   flex: 1;
-  max-width: calc(80% - 56px);
+  max-width: calc(90% - 56px);
 }
 
 .message.user .messageContent {
@@ -211,8 +211,8 @@
 }
 
 .textMessageWrapper {
-  max-height: 150px;
-  overflow-y: auto;
+  /* max-height: 150px; */
+  /* overflow-y: auto; */
   text-overflow: ellipsis;
 }
 
@@ -238,6 +238,20 @@
 
 .messageParagraph:last-child {
   margin-bottom: 0;
+}
+
+.messageHeader {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.messageFooter {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .toolEntry {

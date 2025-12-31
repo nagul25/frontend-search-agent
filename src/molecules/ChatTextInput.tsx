@@ -11,34 +11,38 @@ type ChatTextInputProps = {
 };
 
 function ChatTextInput(props: ChatTextInputProps) {
-    const { inputValue, toggleFileUpload, isLoading, showUploadIcon, onSend, onChange } = props;
+    const { inputValue, toggleFileUpload, isLoading, showUploadIcon=true, onSend, onChange } = props;
 
     const handleSend = () => {
-        if(inputValue.trim() && !isLoading) {
+        if (inputValue.trim() && !isLoading) {
             onSend();
         }
     }
 
     return (
         <div className={styles.inputWrapper}>
-            <button
-            type="button"
-            onClick={toggleFileUpload}
-            disabled={isLoading}
-            className={`${styles.attachButton} ${showUploadIcon ? styles.active : ''}`}
-          >
-            <Paperclip fill='#295dc7' size={28} />
-          </button>
+            {
+                showUploadIcon && toggleFileUpload ?
+                    <button
+                        type="button"
+                        onClick={toggleFileUpload}
+                        disabled={isLoading}
+                        className={`${styles.attachButton} ${showUploadIcon ? styles.active : ''}`}
+                    >
+                        <Paperclip fill='#295dc7' size={28} />
+                    </button>
+                    : null
+            }
 
-            <textarea 
+            <textarea
                 placeholder="Type a message..."
                 value={inputValue}
                 rows={4}
                 className={styles.textInput}
                 onChange={(e) => onChange(e.target.value)}
             />
-            <button 
-                type="button" 
+            <button
+                type="button"
                 onClick={handleSend}
                 className={styles.sendButton}
                 disabled={!inputValue.trim() || isLoading}

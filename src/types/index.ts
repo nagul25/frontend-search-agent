@@ -1,9 +1,12 @@
+import type { Tool } from "../components/ToolsTable";
+
 export interface Message {
   id: string;
   content: string;
   role: "user" | "assistant";
   timestamp: Date;
   files?: UploadedFile[];
+  tools?: Tool[];
 }
 
 export interface UploadedFile {
@@ -32,8 +35,20 @@ export type QueryRequestResponseType = {
     answer: string;
     metadata?: Record<string, unknown>;
     sources?: Array<Record<string, unknown>>;
+    tools?: Tool[];
   };
   upload_info?: {
+    message: string;
+    uploaded_files: Array<Record<string, unknown>>;
+  };
+}
+
+export type ValidateAssessmentResponseType = {
+  message?: string;
+  images_analyzed?: number;
+  assessment?: string;
+  thread_id?: string;
+    upload_info?: {
     message: string;
     uploaded_files: Array<Record<string, unknown>>;
   };
