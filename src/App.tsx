@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import styles from './styles/App.module.css';
-import { AssessmentBot, LookupBot, SettingsPage } from './components';
-import {Settings} from 'lucide-react';
+import { Settings } from 'lucide-react';
 import { ColumnConfigProvider } from './context/ColumnConfigContext';
 import SettingsModal from './components/SettingsModal';
+
+const LookupPage = lazy(() => import('./pages/LookupPage'));
+const AssessmentPage = lazy(() => import('./pages/AssessmentPage'));
 
 
 const App: React.FC = () => {
@@ -33,16 +35,17 @@ const App: React.FC = () => {
                 style={{ textDecoration: 'none', color: 'white' }}
                 onClick={() => setIsOpen(true)}
               >
-                <Settings size={24}/>
+                <Settings size={24} />
               </div>
             </div>
           </header>
-          <Routes>
-            <Route path="/" element={<LookupBot />} />
-            <Route path="/assessment" element={<AssessmentBot />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<LookupBot />} />
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<LookupPage />} />
+              <Route path="/assessment" element={<AssessmentPage />} />
+              <Route path="*" element={<LookupPage />} />
+            </Routes>
+          </Suspense>
           <SettingsModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>
       </Router>
