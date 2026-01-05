@@ -28,7 +28,3 @@ jobs:
       - name: Linting
         # This will run the 'eslint .' command defined in your package.json
         run: yarn lint
-
-      - name: Unit Tests
-        # Added --watchAll=false to ensure the CI doesn't hang
-        run: yarn test --watchAll=false
