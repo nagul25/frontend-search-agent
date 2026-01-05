@@ -8,9 +8,7 @@ import SettingsModal from './components/SettingsModal';
 const LookupPage = lazy(() => import('./pages/LookupPage'));
 const AssessmentPage = lazy(() => import('./pages/AssessmentPage'));
 
-
 const App: React.FC = () => {
-
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,14 +18,18 @@ const App: React.FC = () => {
           <header className={styles.header}>
             <h1 className={styles.headerTitle}>ARB Assistant Platform</h1>
             <div className={styles.actionBtns}>
-              <NavLink to="/"
-                className={({ isActive }) => isActive ? styles.activeLink : ''}
-                style={{ textDecoration: 'none', color: 'white', marginRight: '12px' }}>
+              <NavLink
+                to='/'
+                className={({ isActive }) => (isActive ? styles.activeLink : '')}
+                style={{ textDecoration: 'none', color: 'white', marginRight: '12px' }}
+              >
                 Lookup Agent
               </NavLink>
-              <NavLink to="/assessment"
-                className={({ isActive }) => isActive ? styles.activeLink : ''}
-                style={{ textDecoration: 'none', color: 'white' }}>
+              <NavLink
+                to='/assessment'
+                className={({ isActive }) => (isActive ? styles.activeLink : '')}
+                style={{ textDecoration: 'none', color: 'white' }}
+              >
                 Assessment Agent
               </NavLink>
               <div
@@ -41,9 +43,9 @@ const App: React.FC = () => {
           </header>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<LookupPage />} />
-              <Route path="/assessment" element={<AssessmentPage />} />
-              <Route path="*" element={<LookupPage />} />
+              <Route path='/' element={<LookupPage />} />
+              <Route path='/assessment' element={<AssessmentPage />} />
+              <Route path='*' element={<LookupPage />} />
             </Routes>
           </Suspense>
           <SettingsModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

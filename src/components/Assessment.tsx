@@ -34,26 +34,26 @@ const AssessmentBot: React.FC = () => {
       files: uploadedFiles.length > 0 ? [...uploadedFiles] : undefined,
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setUploadedFiles([]);
     setShowFileUpload(false);
     setIsLoading(true);
 
     try {
-      const {message, assessment} = await chatService.validateAssessment({
+      const { message, assessment } = await chatService.validateAssessment({
         message: inputValue,
-        files: uploadedFiles.map(file => file.file),
+        files: uploadedFiles.map((file) => file.file),
       });
-      console.log("Chat Response: ", message);
+      console.log('Chat Response: ', message);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: assessment || message || "No response from assistant.",
+        content: assessment || message || 'No response from assistant.',
         role: 'assistant',
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
@@ -62,7 +62,7 @@ const AssessmentBot: React.FC = () => {
         role: 'assistant',
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -84,15 +84,15 @@ const AssessmentBot: React.FC = () => {
           <div className={styles.welcomeMessage}>
             <Bot size={48} className={styles.welcomeIcon} />
             <h2>Welcome to Triple A Assessment Assistant</h2>
-            <p>Start a conversation by typing your message below. You can also upload files to get help with documents, images, or other content.</p>
+            <p>
+              Start a conversation by typing your message below. You can also upload files to get
+              help with documents, images, or other content.
+            </p>
           </div>
         ) : (
           <div className={styles.messages}>
             {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`${styles.message} ${styles[message.role]}`}
-              >
+              <div key={message.id} className={`${styles.message} ${styles[message.role]}`}>
                 <div className={styles.messageAvatar}>
                   {message.role === 'user' ? <User size={20} /> : <Bot size={20} />}
                 </div>
@@ -100,10 +100,11 @@ const AssessmentBot: React.FC = () => {
                   <div className={`${styles.textLayer}`}>
                     <div className={`${styles.messageText}`}>
                       <div className={styles.textMessageWrapper}>
-                        {message.role === 'assistant' 
-                          ? <AssistantMarkdownMessage content={message.content} />
-                          : message.content
-                        }
+                        {message.role === 'assistant' ? (
+                          <AssistantMarkdownMessage content={message.content} />
+                        ) : (
+                          message.content
+                        )}
                       </div>
                     </div>
                   </div>
@@ -150,7 +151,12 @@ const AssessmentBot: React.FC = () => {
             />
           </div>
         )}
-        <ChatTextInput inputValue={inputValue} onChange={setInputValue} onSend={handleSendMessage} toggleFileUpload={toggleFileUpload} />
+        <ChatTextInput
+          inputValue={inputValue}
+          onChange={setInputValue}
+          onSend={handleSendMessage}
+          toggleFileUpload={toggleFileUpload}
+        />
       </div>
     </div>
   );

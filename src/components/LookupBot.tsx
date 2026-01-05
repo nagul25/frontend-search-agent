@@ -7,7 +7,6 @@ import styles from '../styles/ChatInterface.module.css';
 import { ChatTextInput } from '../molecules';
 import AssistantMarkdownMessage from '../molecules/AssistantMarkdown';
 
-
 const LookupBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -36,7 +35,7 @@ const LookupBot: React.FC = () => {
       files: uploadedFiles.length > 0 ? [...uploadedFiles] : undefined,
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setUploadedFiles([]);
     setShowFileUpload(false);
@@ -45,18 +44,18 @@ const LookupBot: React.FC = () => {
     try {
       const response = await chatService.sendMessage({
         message: inputValue,
-        files: uploadedFiles.map(file => file.file),
+        files: uploadedFiles.map((file) => file.file),
       });
-      console.log("Chat Response: ", response);
+      console.log('Chat Response: ', response);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response.rag_response?.answer || "No response from assistant.",
+        content: response.rag_response?.answer || 'No response from assistant.',
         role: 'assistant',
         timestamp: new Date(),
         tools: response.rag_response?.tools || [],
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
@@ -65,7 +64,7 @@ const LookupBot: React.FC = () => {
         role: 'assistant',
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -87,27 +86,33 @@ const LookupBot: React.FC = () => {
           <div className={styles.welcomeMessage}>
             <Bot size={48} className={styles.welcomeIcon} />
             <h2>Welcome to Triple A Assistant</h2>
-            <p>Start a conversation by typing your message below. You can also upload files to get help with documents, images, or other content.</p>
+            <p>
+              Start a conversation by typing your message below. You can also upload files to get
+              help with documents, images, or other content.
+            </p>
           </div>
         ) : (
           <div className={styles.messages}>
             {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`${styles.message} ${styles[message.role]}`}
-              >
+              <div key={message.id} className={`${styles.message} ${styles[message.role]}`}>
                 <div className={styles.messageAvatar}>
                   {message.role === 'user' ? <User size={20} /> : <Bot size={20} />}
                 </div>
                 <div className={styles.messageContent}>
                   <div className={`${styles.textLayer}`}>
-                    <div className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}>
+                    <div
+                      className={`${styles.messageText} ${showMoreAnswer ? styles.expanded : ''}`}
+                    >
                       <div className={styles.textMessageWrapper}>
-                        {message.role === 'assistant'
+                        {message.role === 'assistant' ? (
                           // ? formatMessageContent(message.content, message.tools)
-                          ? <AssistantMarkdownMessage content={message.content} tools={message.tools} />
-                          : message.content
-                        }
+                          <AssistantMarkdownMessage
+                            content={message.content}
+                            tools={message.tools}
+                          />
+                        ) : (
+                          message.content
+                        )}
                       </div>
                     </div>
                   </div>

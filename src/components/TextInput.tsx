@@ -1,4 +1,4 @@
-import React, {  useRef, type KeyboardEvent } from 'react';
+import React, { useRef, type KeyboardEvent } from 'react';
 import { Send } from 'lucide-react';
 import styles from '../styles/TextInput.module.css';
 
@@ -15,7 +15,7 @@ const TextInput: React.FC<TextInputProps> = ({
   value,
   onChange,
   onSend,
-  placeholder = "Message ARB...",
+  placeholder = 'Message ARB...',
   disabled = false,
   maxLength = 4000,
 }) => {
@@ -63,7 +63,7 @@ const TextInput: React.FC<TextInputProps> = ({
           rows={1}
         />
         <button
-          type="button"
+          type='button'
           onClick={handleSend}
           className={styles.sendButton}
           disabled={!value.trim() || disabled}

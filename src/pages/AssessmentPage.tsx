@@ -1,7 +1,5 @@
-import { AssessmentBot } from '../components'
+import { AssessmentBot } from '../components';
 
 export default function AssessmentPage() {
-  return (
-    <AssessmentBot />
-  )
+  return <AssessmentBot />;
 }

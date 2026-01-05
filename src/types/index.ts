@@ -1,9 +1,9 @@
-import type { Tool } from "../components/ToolsTable";
+import type { Tool } from '../components/ToolsTable';
 
 export interface Message {
   id: string;
   content: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   timestamp: Date;
   files?: UploadedFile[];
   tools?: Tool[];
@@ -24,7 +24,7 @@ export interface ChatRequest {
 
 export interface ChatResponse {
   message: string;
-  status: "success" | "error";
+  status: 'success' | 'error';
   error?: string;
 }
 
@@ -41,18 +41,18 @@ export type QueryRequestResponseType = {
     message: string;
     uploaded_files: Array<Record<string, unknown>>;
   };
-}
+};
 
 export type ValidateAssessmentResponseType = {
   message?: string;
   images_analyzed?: number;
   assessment?: string;
   thread_id?: string;
-    upload_info?: {
+  upload_info?: {
     message: string;
     uploaded_files: Array<Record<string, unknown>>;
   };
-}
+};
 
 export interface ApiResponse<T> {
   data: T;
