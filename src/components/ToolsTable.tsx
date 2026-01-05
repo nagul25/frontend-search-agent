@@ -9,7 +9,6 @@ import {
   createColumnHelper,
   type SortingState,
   type ColumnFiltersState,
-  type CellContext,
 } from '@tanstack/react-table';
 import styles from '../styles/ToolsTable.module.css';
 import { useColumnConfig } from '../context/useColumnConfig';
@@ -28,20 +27,10 @@ export interface Tool {
   metaTags?: string;
   standardsComments?: string;
   eaNotes?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const columnHelper = createColumnHelper<Tool>();
-
-const renderColumnCell = (label: string, info: CellContext<Tool, any>) => {
-  if (label === 'Meta Tags') {
-    return <div className={styles.metaTags}>{info.getValue() || '-'}</div>;
-  }
-  if (label === 'Standards Comments' || label === 'EA Notes' || label === 'Description') {
-    return <div className={styles.description}>{info.getValue() || '-'}</div>;
-  }
-  return info.getValue() || '-';
-};
 
 const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
   const { columns } = useColumnConfig();
@@ -56,11 +45,23 @@ const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
         .map((column) =>
           columnHelper.accessor(column.id as string, {
             header: column.label,
-            cell: (info) => renderColumnCell(column.label, info),
-            size: 150, // Default size, can be customized
-          })
+            // Inline the cell renderer to keep the scope clear for the compiler
+            cell: (info) => {
+              const value = info.getValue() as string;
+              const label = column.label;
+
+              if (label === 'Meta Tags') {
+                return <div className={styles.metaTags}>{value || '-'}</div>;
+              }
+              if (['Standards Comments', 'EA Notes', 'Description'].includes(label)) {
+                return <div className={styles.description}>{value || '-'}</div>;
+              }
+              return value || '-';
+            },
+            size: 150,
+          }),
         ),
-    [columns]
+    [columns],
   );
 
   const table = useReactTable({
@@ -86,8 +87,8 @@ const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
     <div className={styles.tableContainer}>
       <div className={styles.searchContainer}>
         <input
-          type="text"
-          placeholder="Search tools..."
+          type='text'
+          placeholder='Search tools...'
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className={styles.searchInput}
@@ -112,11 +113,11 @@ const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
                     <div className={styles.headerContent}>
                       {flexRender(header.column.columnDef.header, header.getContext())}
                       <span className={styles.sortIndicator}>
-                        {header.column.getIsSorted() ? (
-                          header.column.getIsSorted() === 'desc' ? ' ▼' : ' ▲'
-                        ) : (
-                          ''
-                        )}
+                        {header.column.getIsSorted()
+                          ? header.column.getIsSorted() === 'desc'
+                            ? ' ▼'
+                            : ' ▲'
+                          : ''}
                       </span>
                     </div>
                   </th>
@@ -168,4 +169,3 @@ const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
 };
 
 export default ToolsTable;
-

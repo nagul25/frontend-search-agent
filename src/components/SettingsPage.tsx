@@ -8,8 +8,8 @@ const SettingsPage: React.FC = () => {
   const toggleColumn = (id: string) => {
     setColumns((prevColumns) =>
       prevColumns.map((column) =>
-        column.id === id ? { ...column, enabled: !column.enabled } : column
-      )
+        column.id === id ? { ...column, enabled: !column.enabled } : column,
+      ),
     );
   };
 
@@ -21,7 +21,7 @@ const SettingsPage: React.FC = () => {
           <div key={column.id} className={styles.columnItem}>
             <label>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={column.enabled}
                 onChange={() => toggleColumn(column.id)}
               />

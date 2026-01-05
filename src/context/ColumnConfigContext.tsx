@@ -48,4 +48,3 @@ export const ColumnConfigProvider: React.FC<{ children: React.ReactNode }> = ({ 
     </ColumnConfigContext.Provider>
   );
 };
-

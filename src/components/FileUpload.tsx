@@ -17,8 +17,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
   onFilesChange,
   maxFiles = 10,
   maxFileSize = 10,
-  acceptedTypes = ['image/*', 'text/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-  onToggleFileDrop
+  acceptedTypes = [
+    'image/*',
+    'text/*',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
+  onToggleFileDrop,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -50,7 +56,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       }
 
       // Check file type
-      const isValidType = acceptedTypes.some(type => {
+      const isValidType = acceptedTypes.some((type) => {
         if (type.endsWith('/*')) {
           return file.type.startsWith(type.slice(0, -1));
         }
@@ -115,7 +121,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   const removeFile = (fileId: string) => {
-    onFilesChange(files.filter(file => file.id !== fileId));
+    onFilesChange(files.filter((file) => file.id !== fileId));
   };
 
   const openFileDialog = () => {
@@ -136,27 +142,24 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </button>
         <input
           ref={fileInputRef}
-          type="file"
+          type='file'
           multiple
           accept={acceptedTypes.join(',')}
           onChange={handleFileInputChange}
           className={styles.hiddenInput}
         />
-        
+
         <div className={styles.dropZoneContent}>
           <Upload size={24} className={styles.uploadIcon} />
           <p className={styles.dropZoneText}>
             Drag and drop files here, or{' '}
-            <button
-              type="button"
-              onClick={openFileDialog}
-              className={styles.browseButton}
-            >
+            <button type='button' onClick={openFileDialog} className={styles.browseButton}>
               browse
             </button>
           </p>
           <p className={styles.dropZoneSubtext}>
-            Supports images, documents, and text files (max {maxFileSize}MB each, up to {maxFiles} files)
+            Supports images, documents, and text files (max {maxFileSize}MB each, up to {maxFiles}{' '}
+            files)
           </p>
         </div>
       </div>
@@ -168,16 +171,14 @@ const FileUpload: React.FC<FileUploadProps> = ({
             {files.map((file) => (
               <div key={file.id} className={styles.fileItem}>
                 <div className={styles.fileInfo}>
-                  <div className={styles.fileIcon}>
-                    {getFileIcon(file.type)}
-                  </div>
+                  <div className={styles.fileIcon}>{getFileIcon(file.type)}</div>
                   <div className={styles.fileDetails}>
                     <span className={styles.fileName}>{file.name}</span>
                     <span className={styles.fileSize}>{formatFileSize(file.size)}</span>
                   </div>
                 </div>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => removeFile(file.id)}
                   className={styles.removeButton}
                 >

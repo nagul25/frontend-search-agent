@@ -1,7 +1,5 @@
-import { LookupBot } from '../components'
+import { LookupBot } from '../components';
 
 export default function LookupPage() {
-  return (
-    <LookupBot />
-  )
+  return <LookupBot />;
 }

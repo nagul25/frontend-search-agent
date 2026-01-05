@@ -11,7 +11,7 @@ interface Tool {
   capabilityManager?: string;
   description?: string;
   metaTags?: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface ParsedResponse {
@@ -34,7 +34,7 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
   // Pattern: "Found X pub/sub tools" or numbered list with " - " separators
   const toolPattern = /^\d+\.\s+/m;
   const hasNumberedList = toolPattern.test(content);
-  
+
   if (!hasNumberedList) {
     return result;
   }
@@ -48,7 +48,7 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
 
   for (const line of lines) {
     const trimmedLine = line.trim();
-    
+
     // Check if this is a tool line (starts with number followed by period)
     if (/^\d+\.\s+/.test(trimmedLine)) {
       inToolSection = true;
@@ -71,47 +71,47 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
   }
 
   // Parse each tool line
-  const tools: Tool[] = toolLines.map(line => {
+  const tools: Tool[] = toolLines.map((line) => {
     // Extract the number
     const numberMatch = line.match(/^(\d+)\.\s+/);
     const number = numberMatch ? parseInt(numberMatch[1]) : 0;
-    
+
     // Remove the number prefix
     const contentWithoutNumber = line.replace(/^\d+\.\s+/, '');
-    
+
     // Split by " - " to get individual attributes
     const parts = contentWithoutNumber.split(' - ');
-    
+
     const tool: Tool = { number, name: '' };
-    
+
     for (const part of parts) {
       const trimmedPart = part.trim();
-      
+
       // Try to extract key-value pairs
       // Patterns: "Key: Value" or "Key/Alternate: Value"
       const keyValueMatch = trimmedPart.match(/^([^:]+):\s*(.+)$/);
-      
+
       if (keyValueMatch) {
         let key = keyValueMatch[1].trim();
         const value = keyValueMatch[2].trim();
-        
+
         // Handle compound keys like "Name/Tools"
         if (key.includes('/')) {
           key = key.split('/')[0];
         }
-        
+
         // Normalize key names
         const normalizedKey = normalizeKeyName(key);
-        
+
         // Handle special cases
         if (normalizedKey === 'metaTags') {
-          tool[normalizedKey] = value.split(',').map(v => v.trim());
+          tool[normalizedKey] = value.split(',').map((v) => v.trim());
         } else {
           tool[normalizedKey] = value;
         }
       }
     }
-    
+
     return tool;
   });
 
@@ -128,26 +128,25 @@ export const parseToolsFromResponse = (content: string): ParsedResponse => {
  */
 const normalizeKeyName = (key: string): string => {
   const keyMap: Record<string, string> = {
-    'name': 'name',
-    'nameoftools': 'name',
-    'tools': 'name',
-    'manufacturer': 'manufacturer',
-    'tebstatus': 'status',
-    'status': 'status',
-    'capabilities': 'capabilities',
-    'subcapability': 'subCapability',
-    'version': 'version',
-    'standardcategory': 'standardCategory',
-    'earreferenceid': 'earReferenceId',
-    'capabilitymanager': 'capabilityManager',
-    'description': 'description',
-    'metatags': 'metaTags',
-    'metatagsdescription': 'metaTags',
-    'standardscomments': 'standardsComments',
-    'eanotes': 'eaNotes',
+    name: 'name',
+    nameoftools: 'name',
+    tools: 'name',
+    manufacturer: 'manufacturer',
+    tebstatus: 'status',
+    status: 'status',
+    capabilities: 'capabilities',
+    subcapability: 'subCapability',
+    version: 'version',
+    standardcategory: 'standardCategory',
+    earreferenceid: 'earReferenceId',
+    capabilitymanager: 'capabilityManager',
+    description: 'description',
+    metatags: 'metaTags',
+    metatagsdescription: 'metaTags',
+    standardscomments: 'standardsComments',
+    eanotes: 'eaNotes',
   };
 
-  const normalizedInput = key.toLowerCase().replace(/[\/\s]+/g, '');
+  const normalizedInput = key.toLowerCase().replace(/[/\s]+/g, '');
   return keyMap[normalizedInput] || key;
 };
-

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ColumnConfigContext } from "./ColumnConfigContext";
+import { useContext } from 'react';
+import { ColumnConfigContext } from './ColumnConfigContext';
 
 export const useColumnConfig = () => {
   const context = useContext(ColumnConfigContext);
@@ -7,4 +7,4 @@ export const useColumnConfig = () => {
     throw new Error('useColumnConfig must be used within a ColumnConfigProvider');
   }
   return context;
-}
+};
