@@ -1,0 +1,34 @@
+name: PR Quality Check
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # Enabling yarn cache speeds up your pipeline significantly
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        # --frozen-lockfile is the yarn equivalent of 'npm ci'
+        run: yarn install --frozen-lockfile
+
+      - name: Type Check (TypeScript)
+        run: yarn tsc --noEmit
+
+      - name: Linting
+        # This will run the 'eslint .' command defined in your package.json
+        run: yarn lint
+
+      - name: Unit Tests
+        # Added --watchAll=false to ensure the CI doesn't hang
+        run: yarn test --watchAll=false
