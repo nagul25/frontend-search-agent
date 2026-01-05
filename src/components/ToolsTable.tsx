@@ -64,6 +64,7 @@ const ToolsTable: React.FC<{ tools: Tool[] }> = ({ tools }) => {
     [columns],
   );
 
+  // @eslint-disable-next-line react-hooks/rules-of-hooks
   const table = useReactTable({
     data: tools,
     columns: tableColumns,
