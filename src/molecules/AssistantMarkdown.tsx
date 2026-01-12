@@ -3,10 +3,12 @@ import ReactMarkdown from "react-markdown";
 // import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import ToolsTable, { type Tool } from "../components/ToolsTable";
+import type { ScoresData } from "../components/ScoresTable";
+import ScoresTable from "../components/ScoresTable";
 
-export type AssistantMarkdownMessageProps = {content: string, tools?: Tool[]}
+export type AssistantMarkdownMessageProps = {content: string, tools?: Tool[], scores?: ScoresData};
 
-const AssistantMarkdownMessage = ({ content, tools }: AssistantMarkdownMessageProps) => {
+const AssistantMarkdownMessage = ({ content, tools, scores }: AssistantMarkdownMessageProps) => {
     console.log("Rendering AssistantMarkdownMessage with content:", content);
 
     return (
@@ -36,6 +38,7 @@ const AssistantMarkdownMessage = ({ content, tools }: AssistantMarkdownMessagePr
       {content}
     </ReactMarkdown>
     {tools && tools.length > 0 && <ToolsTable tools={tools || []} />}
+    {scores && scores.categories.length > 0 && ( <ScoresTable scoresData={scores} />)}
   </div>
 )}
 

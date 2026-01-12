@@ -1,3 +1,5 @@
+
+import type { ScoresData } from "../components/ScoresTable";
 import type { Tool } from "../components/ToolsTable";
 
 export interface Message {
@@ -7,6 +9,7 @@ export interface Message {
   timestamp: Date;
   files?: UploadedFile[];
   tools?: Tool[];
+  scores?: ScoresData;
 }
 
 export interface UploadedFile {
@@ -47,7 +50,7 @@ export type ValidateAssessmentResponseType = {
   message?: string;
   images_analyzed?: number;
   assessment?: string;
-  scores?: Array<Record<string, unknown>>;
+  scores?: ScoresData;
   thread_id?: string;
     upload_info?: {
     message: string;

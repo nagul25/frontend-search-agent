@@ -7,27 +7,12 @@ import { ChatTextInput } from '../molecules';
 import styles from '../styles/ChatInterface.module.css';
 import AssistantMarkdownMessage from '../molecules/AssistantMarkdown';
 
-interface ScoresData {
-  categories: Array<{
-    name: string;
-    score: number;
-    max_score: number;
-    status: string;
-    summary: string;
-    details: string;
-  }>;
-  average_score: number;
-  total_categories: number;
-  assessment_date: string;
-}
-
 const AssessmentBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
-  const [scoresData, setScoresData] = useState<ScoresData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -63,16 +48,12 @@ const AssessmentBot: React.FC = () => {
       console.log("Assessment Scores: ", scores);
       console.log("Chat Response: ", message);
 
-      // Set scores data if available
-      if (scores && typeof scores === 'object') {
-        setScoresData(scores as unknown as ScoresData);
-      }
-
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: assessment || message || "No response from assistant.",
         role: 'assistant',
         timestamp: new Date(),
+        scores: scores,
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -99,51 +80,6 @@ const AssessmentBot: React.FC = () => {
     setUploadedFiles([]);
   };
 
-  const renderScoresTable = () => {
-    if (!scoresData || !scoresData.categories || scoresData.categories.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className={styles.scoresTableContainer}>
-        <h3>Assessment Scores</h3>
-        <table className={styles.scoresTable}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Score</th>
-              <th>Max Score</th>
-              <th>Status</th>
-              <th>Summary</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {scoresData.categories.map((category, index) => (
-              <tr key={index}>
-                <td>{category.name}</td>
-                <td>{category.score}</td>
-                <td>{category.max_score}</td>
-                <td>
-                  <span className={`${styles.statusBadge} ${styles[`status-${category.status}`]}`}>
-                    {category.status}
-                  </span>
-                </td>
-                <td>{category.summary}</td>
-                <td>{category.details}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* <div className={styles.scoresMetadata}>
-          <p><strong>Average Score:</strong> {scoresData.average_score}</p>
-          <p><strong>Total Categories:</strong> {scoresData.total_categories}</p>
-          <p><strong>Assessment Date:</strong> {scoresData.assessment_date}</p>
-        </div> */}
-      </div>
-    );
-  };
-
   return (
     <div className={styles.chatInterface}>
       <div className={styles.messagesContainer}>
@@ -168,7 +104,7 @@ const AssessmentBot: React.FC = () => {
                     <div className={`${styles.messageText}`}>
                       <div className={styles.textMessageWrapper}>
                         {message.role === 'assistant' 
-                          ? <AssistantMarkdownMessage content={message.content} />
+                          ? <AssistantMarkdownMessage content={message.content} scores={message.scores} />
                           : message.content
                         }
                       </div>
@@ -206,8 +142,6 @@ const AssessmentBot: React.FC = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
-
-      {renderScoresTable()}
 
       <div className={styles.inputContainer}>
         {showFileUpload && (
