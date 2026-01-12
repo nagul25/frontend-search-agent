@@ -47,6 +47,7 @@ export type ValidateAssessmentResponseType = {
   message?: string;
   images_analyzed?: number;
   assessment?: string;
+  scores?: Array<Record<string, unknown>>;
   thread_id?: string;
     upload_info?: {
     message: string;

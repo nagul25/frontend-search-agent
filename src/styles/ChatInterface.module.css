@@ -499,3 +499,110 @@
 .textInputWrapper {
   flex: 1;
 }
+.scoresTableContainer {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.scoresTableContainer h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.scoresTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.scoresTable thead {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.scoresTable th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #4f46e5;
+  white-space: nowrap;
+}
+
+.scoresTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  color: #475569;
+}
+
+.scoresTable tbody tr:hover {
+  background-color: rgba(99, 102, 241, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.statusBadge.status-good {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.statusBadge.status-warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.statusBadge.status-critical {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.statusBadge.status-neutral {
+  background-color: rgba(148, 163, 184, 0.2);
+  color: #334155;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.scoresMetadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.scoresMetadata p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.scoresMetadata strong {
+  color: #1e293b;
+  font-weight: 600;
+}
