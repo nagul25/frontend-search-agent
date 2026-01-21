@@ -83,7 +83,7 @@ const AssessmentBot: React.FC = () => {
         {messages.length === 0 ? (
           <div className={styles.welcomeMessage}>
             <Bot size={48} className={styles.welcomeIcon} />
-            <h2>Welcome to the Architectural Assessment Agent</h2>
+            <h2>Welcome to the Architecture Assessment Agent</h2>
             <p>Start a conversation by typing your message below. You can upload pdf documents.</p>
           </div>
         ) : (
