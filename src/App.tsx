@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from './styles/App.module.css';
-import { Settings } from 'lucide-react';
 import { ColumnConfigProvider } from './context/ColumnConfigContext';
 import SettingsModal from './components/SettingsModal';
 
@@ -17,7 +16,7 @@ const App: React.FC = () => {
     <ColumnConfigProvider>
       <Router>
         <div className={styles.app}>
-          <header className={styles.header}>
+          {/* <header className={styles.header}>
             <h1 className={styles.headerTitle}>ARB Assistant Platform</h1>
             <div className={styles.actionBtns}>
               <NavLink to="/"
@@ -38,8 +37,8 @@ const App: React.FC = () => {
                 <Settings size={24} />
               </div>
             </div>
-          </header>
-          <Suspense fallback={<div>Loading...</div>}>
+          </header> */}
+          <Suspense fallback={<div className={styles.loadingContainer}><span className={styles.loadingText}>Loading...</span></div>}>
             <Routes>
               <Route path="/" element={<LookupPage />} />
               <Route path="/assessment" element={<AssessmentPage />} />

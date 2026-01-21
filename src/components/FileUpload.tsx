@@ -17,7 +17,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   onFilesChange,
   maxFiles = 10,
   maxFileSize = 10,
-  acceptedTypes = ['image/*', 'text/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  acceptedTypes = ['application/pdf'],
   onToggleFileDrop
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -156,7 +156,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </button>
           </p>
           <p className={styles.dropZoneSubtext}>
-            Supports images, documents, and text files (max {maxFileSize}MB each, up to {maxFiles} files)
+            Supports pdf documents (max {maxFileSize}MB each, up to {maxFiles} files)
           </p>
         </div>
       </div>
