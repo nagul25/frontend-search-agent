@@ -41,16 +41,19 @@ const AssessmentBot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const {message, assessment} = await chatService.validateAssessment({
+      const {message, assessment, scores} = await chatService.validateAssessment({
         message: inputValue,
         files: uploadedFiles.map(file => file.file),
       });
+      console.log("Assessment Scores: ", scores);
       console.log("Chat Response: ", message);
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: assessment || message || "No response from assistant.",
         role: 'assistant',
         timestamp: new Date(),
+        scores: scores,
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -101,7 +104,7 @@ const AssessmentBot: React.FC = () => {
                     <div className={`${styles.messageText}`}>
                       <div className={styles.textMessageWrapper}>
                         {message.role === 'assistant' 
-                          ? <AssistantMarkdownMessage content={message.content} />
+                          ? <AssistantMarkdownMessage content={message.content} scores={message.scores} />
                           : message.content
                         }
                       </div>

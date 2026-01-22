@@ -185,3 +185,69 @@
   }
 }
 
+/* Status Badge Styles */
+.statusBadge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  border: 1px solid;
+}
+
+.statusBadge.status-good {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.statusBadge.status-warning {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.statusBadge.status-critical {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.statusBadge.status-neutral {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #334155;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+/* Scores Metadata Styles */
+.scoresMetadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+.scoresMetadata p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.scoresMetadata strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* Table Title */
+.tableTitle {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
